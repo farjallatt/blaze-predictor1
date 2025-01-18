@@ -1,0 +1,147 @@
+from analysis import calcular_minutos_projetados, identificar_puxadores, calcular_score_intensidade
+import requests
+from bs4 import BeautifulSoup
+import sqlite3
+import schedule
+import time
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Carrega as variáveis de ambiente do arquivo .env
+
+DATABASE_PATH = os.getenv("DATABASE_PATH")
+URL = "https://www.tipminer.com/br/historico/blaze/double"
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+}  # Adicione um user-agent para evitar bloqueios
+
+def create_database():
+    """Cria o banco de dados e a tabela se não existirem."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS historico (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            minuto TEXT,
+            cor TEXT,
+            numero INTEGER,
+            score_intensidade REAL DEFAULT 0.0
+        )
+        """
+    )
+    conn.commit()
+    conn.close()
+
+def get_data():
+    """Faz a requisição HTTP e retorna o HTML da página."""
+    try:
+        response = requests.get(URL, headers=HEADERS)
+        response.raise_for_status()  # Lança uma exceção para erros HTTP
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao acessar a página: {e}")
+        return None
+
+def extract_data(html):
+    """Extrai os dados das rodadas do HTML."""
+    soup = BeautifulSoup(html, "html.parser")
+
+    # Localizar a div que contém os resultados
+    results_div = soup.find('div', class_='scroll-x')
+
+    # Encontrar todas as divs que contêm o resultado de uma rodada
+    rounds_divs = results_div.find_all('div', class_='result')
+
+    data = []
+    for round_div in rounds_divs:
+        # Extrai a cor e o número
+        roulette_number = round_div.find('div', class_='roulette-number')
+        if roulette_number:
+            number = roulette_number.text.strip()
+            color = roulette_number['class'][1]  # Assume que a segunda classe é a cor
+
+            # Extrai o minuto
+            minute_div = round_div.find('div', class_='minute')
+            if minute_div:
+                minute = minute_div.text.strip()
+
+                # Determina a cor baseado na classe
+                if 'red' in color:
+                    color = 'vermelho'
+                elif 'black' in color:
+                    color = 'preto'
+                elif 'white' in color:
+                    color = 'branco'
+                else:
+                    color = 'desconhecido'
+
+                data.append({
+                    "minuto": minute,
+                    "cor": color,
+                    "numero": int(number)
+                })
+
+    return data
+
+def store_data(data):
+    """Armazena os dados no banco de dados."""
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    for item in data:
+        try:
+            cursor.execute(
+                "INSERT INTO historico (timestamp, minuto, cor, numero) VALUES (?, ?, ?, ?)",
+                (time.strftime("%Y-%m-%d %H:%M:%S"), item["minuto"], item["cor"], item["numero"]),
+            )
+        except sqlite3.IntegrityError as e:
+            print(f"Erro ao inserir registro: {e}")
+    conn.commit()
+    conn.close()
+
+# ... (código do scraper.py) ...
+
+    def collect_data():
+        """Função principal para coletar e armazenar os dados."""
+        html = get_data()
+        if html:
+            data = extract_data(html)
+            if data:
+                store_data(data)
+                print(f"Dados coletados e armazenados com sucesso em {time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+                # Calcular score de intensidade para o último minuto coletado
+                ultimo_minuto = data[-1]['minuto']
+                puxadores_ultimo_minuto = identificar_puxadores(ultimo_minuto)
+                minutos_proj = calcular_minutos_projetados(puxadores_ultimo_minuto)
+                score = calcular_score_intensidade(ultimo_minuto)
+
+                # Atualizar o banco de dados com o score de intensidade
+                conn = sqlite3.connect(DATABASE_PATH)
+                cursor = conn.cursor()
+                try:
+                    cursor.execute(
+                        "UPDATE historico SET score_intensidade = ? WHERE minuto = ?",
+                        (score, ultimo_minuto)
+                    )
+                    conn.commit()
+                    print(f"Score de intensidade ({score}) calculado e armazenado para o minuto {ultimo_minuto}")
+                except Exception as e:
+                    print(f"Erro ao atualizar o score de intensidade: {e}")
+                finally:
+                    conn.close()
+            else:
+                print("Não foi possível extrair os dados.")
+        else:
+            print("Não foi possível obter o HTML da página.")
+
+    # ... (restante do código do scraper.py) ...
+
+if __name__ == "__main__":
+    create_database()
+    collect_data()  # Executa a coleta uma vez para testar
+    schedule.every(30).seconds.do(collect_data)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
