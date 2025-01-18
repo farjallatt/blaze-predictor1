@@ -1,0 +1,133 @@
+import unittest
+import analysis
+import sqlite3
+import os
+from dotenv import load_dotenv
+
+# Carrega as variáveis de ambiente
+load_dotenv()
+
+# Configurar um banco de dados temporário para testes
+TEST_DATABASE_PATH = os.getenv("DATABASE_PATH")  # Usar a mesma configuração do analysis.py
+
+class TestAnalysis(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        """Configura o banco de dados de teste antes de todos os testes."""
+        # Conectar ao banco de dados temporário
+        cls.conn = sqlite3.connect(TEST_DATABASE_PATH)
+        cls.cursor = cls.conn.cursor()
+
+        # Criar a tabela de histórico (copie a estrutura da sua tabela original)
+        cls.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS historico (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT,
+                minuto TEXT,
+                cor TEXT,
+                numero INTEGER,
+                score_intensidade REAL DEFAULT 0.0
+            )
+        """)
+        cls.conn.commit()
+
+    @classmethod
+    def tearDownClass(cls):
+        """Fecha a conexão com o banco de dados."""
+        cls.conn.close()
+
+    def setUp(self):
+        """Configura o ambiente para cada teste."""
+        # Limpar os dados da tabela entre os testes
+        self.cursor.execute("DELETE FROM historico")
+        self.conn.commit()
+
+    def test_calcular_minutos_projetados(self):
+        """Testes para a função calcular_minutos_projetados."""
+        # Teste com puxadores sem números águia
+        puxadores = [
+            {'minuto': '10:02', 'numero': 1, 'cor': 'vermelho'},
+            {'minuto': '10:02', 'numero': 7, 'cor': 'vermelho'},
+            {'minuto': '10:03', 'numero': 12, 'cor': 'preto'},
+            {'minuto': '10:04', 'numero': 10, 'cor': 'preto'}
+        ]
+        minutos_projetados = analysis.calcular_minutos_projetados(puxadores)
+        self.assertCountEqual(minutos_projetados, ['10:01', '10:02', '10:03', '10:08', '10:09', '10:10', '10:15', '10:16', '10:14', '10:13', '10:14', '10:15'])
+
+        # Teste com puxadores incluindo números águia
+        puxadores = [
+            {'minuto': '10:02', 'numero': 4, 'cor': 'vermelho'},  # 4 é um número águia
+            {'minuto': '10:02', 'numero': 7, 'cor': 'vermelho'},
+            {'minuto': '10:03', 'numero': 11, 'cor': 'preto'},  # 11 é um número águia
+            {'minuto': '10:04', 'numero': 10, 'cor': 'preto'}
+        ]
+        minutos_projetados = analysis.calcular_minutos_projetados(puxadores)
+        self.assertCountEqual(minutos_projetados, ['10:05', '10:06', '10:07', '10:08', '10:09', '10:10', '10:14', '10:15', '10:16', '10:13', '10:14', '10:15'])
+
+        # Teste com puxadores incluindo o número 0
+        puxadores = [
+            {'minuto': '10:02', 'numero': 0, 'cor': 'branco'},
+            {'minuto': '10:02', 'numero': 7, 'cor': 'vermelho'},
+            {'minuto': '10:03', 'numero': 12, 'cor': 'preto'},
+            {'minuto': '10:04', 'numero': 10, 'cor': 'preto'}
+        ]
+        minutos_projetados = analysis.calcular_minutos_projetados(puxadores)
+        self.assertCountEqual(minutos_projetados, ['10:01', '10:02', '10:03', '10:08', '10:09', '10:10', '10:15', '10:16', '10:14', '10:13', '10:14', '10:15'])
+
+    def test_identificar_puxadores(self):
+        """Testes para a função identificar_puxadores."""
+        # Inserir dados de teste no banco
+        self.cursor.executemany("""
+            INSERT INTO historico (timestamp, minuto, cor, numero) VALUES
+            ('2023-12-20 10:00:00', '09:55', 'vermelho', 5),
+            ('2023-12-20 10:00:00', '09:56', 'preto', 8),
+            ('2023-12-20 10:00:00', '09:57', 'vermelho', 11),
+            ('2023-12-20 10:00:00', '09:58', 'vermelho', 1),
+            ('2023-12-20 10:00:00', '09:59', 'branco', 0),
+            ('2023-12-20 10:00:00', '10:00', 'preto', 6),
+            ('2023-12-20 10:00:00', '10:01', 'vermelho', 9),
+            ('2023-12-20 10:00:00', '10:02', 'preto', 14),
+            ('2023-12-20 10:00:00', '10:03', 'vermelho', 5)
+        """, [])
+        self.conn.commit()
+
+        # Teste para um minuto no meio do histórico
+        puxadores = analysis.identificar_puxadores('09:59')
+        self.assertEqual(len(puxadores), 4)
+        self.assertEqual(puxadores[0]['minuto'], '09:57')
+        self.assertEqual(puxadores[1]['minuto'], '09:58')
+        self.assertEqual(puxadores[2]['minuto'], '10:00')
+        self.assertEqual(puxadores[3]['minuto'], '10:01')
+
+        # Teste para um minuto no início do histórico
+        puxadores = analysis.identificar_puxadores('09:56')
+        self.assertEqual(len(puxadores), 4)
+        self.assertEqual(puxadores[0]['minuto'], '09:55')
+        self.assertEqual(puxadores[1]['minuto'], '09:57')
+        self.assertEqual(puxadores[2]['minuto'], '09:58')
+        self.assertEqual(puxadores[3]['minuto'], '09:59')
+
+
+        # Teste para um minuto no final do histórico
+        puxadores = analysis.identificar_puxadores('10:02')
+        self.assertEqual(len(puxadores), 4)
+        self.assertEqual(puxadores[0]['minuto'], '10:00')
+        self.assertEqual(puxadores[1]['minuto'], '10:01')
+        self.assertEqual(puxadores[2]['minuto'], '10:03')
+
+        # Teste para um minuto com branco valendo zero
+        puxadores = analysis.identificar_puxadores('09:59')
+        self.assertEqual(len(puxadores), 4)
+        self.assertEqual(puxadores[0]['numero'], 11)
+        self.assertEqual(puxadores[1]['numero'], 1)
+        self.assertEqual(puxadores[2]['numero'], 6)  # O branco 0 foi ignorado
+        self.assertEqual(puxadores[3]['numero'], 9)
+    
+    # Adicione mais testes para identificar_puxadores conforme necessário
+
+    # Aqui vão os testes para calcular_score_intensidade
+    # ... (Você vai adicionar testes para calcular_score_intensidade aqui depois) ...
+
+if __name__ == '__main__':
+    unittest.main()
