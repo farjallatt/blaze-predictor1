@@ -1,0 +1,367 @@
+import sqlite3
+import os
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
+
+load_dotenv()
+
+DATABASE_PATH = os.getenv("DATABASE_PATH")
+
+def calcular_minutos_projetados(puxadores):
+    """
+    Calcula os minutos projetados para o próximo branco com base na numerologia dos puxadores.
+
+    Args:
+        puxadores: Lista de dicionários, onde cada dicionário representa um puxador
+                   com as chaves 'minuto' (string), 'numero' (inteiro) e 'cor' (string).
+
+    Returns:
+        Lista de strings com os minutos projetados (ex: ["07:08", "07:09", "07:10"]).
+    """
+    minutos_projetados = []
+    for puxador in puxadores:
+        minuto = puxador['minuto']
+        numero = puxador['numero']
+
+        minuto_proj = int(minuto.split(':')[1]) + numero
+
+        # Ajusta para minutos maiores que 59
+        minuto_proj %= 60
+
+        # Formata o minuto projetado
+        minuto_proj_str = f"{minuto.split(':')[0]}:{minuto_proj:02d}"
+
+        # Aplica a taxa de erro
+        for m in [minuto_proj - 1, minuto_proj, minuto_proj + 1]:
+            if m >= 0 and m <= 59:
+                minuto_formatado = f"{minuto.split(':')[0]}:{m:02d}"
+                minutos_projetados.append(minuto_formatado)
+
+    return minutos_projetados
+
+def identificar_puxadores(minuto_branco):
+    """
+    Identifica os puxadores do branco especificado.
+
+    Args:
+        minuto_branco: String do minuto do branco (ex: "07:03").
+
+    Returns:
+        Lista de dicionários, onde cada dicionário representa um puxador,
+        com as chaves 'minuto', 'numero' e 'cor'.
+    """
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+    puxadores = []
+
+    # Consulta para obter as duas rodadas anteriores e as duas posteriores
+    cursor.execute("""
+        SELECT minuto, numero, cor
+        FROM historico
+        WHERE minuto >= strftime('%H:%M', time(?, '-2 minutes'))
+          AND minuto <= strftime('%H:%M', time(?, '+2 minutes'))
+          AND minuto <> ?
+        ORDER BY minuto
+    """, (minuto_branco, minuto_branco, minuto_branco))
+
+    rows = cursor.fetchall()
+
+    # Processar os resultados para obter os puxadores
+    for row in rows:
+        puxadores.append({
+            "minuto": row[0],
+            "numero": row[1],
+            "cor": row[2]
+        })
+
+    conn.close()
+
+    # Retorna apenas os 4 puxadores mais próximos do minuto_branco
+    return puxadores[:4]
+
+def _verificar_mini_chuva(minuto, conn, cursor):
+    """Verifica se ocorreu uma "mini-chuva" de brancos antes do minuto especificado."""
+    hora, minuto_atual = map(int, minuto.split(':'))
+
+    # Verifica se o minuto atual é menor que 10 para ajustar a contagem dos 10 minutos anteriores
+    if minuto_atual < 10:
+        # Calcula quantos minutos anteriores no mesmo intervalo de hora
+        minutos_anteriores_mesma_hora = minuto_atual
+        # Calcula quantos minutos pegar da hora anterior
+        minutos_hora_anterior = 10 - minutos_anteriores_mesma_hora
+        
+        # Consulta para contar brancos na mesma hora, nos minutos anteriores ao atual
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM historico 
+            WHERE cor = 'branco' 
+            AND strftime('%H:%M', minuto) >= ? 
+            AND strftime('%H:%M', minuto) < ?
+        """, (f"{hora:02d}:{minuto_atual - minutos_anteriores_mesma_hora:02d}", minuto))
+        brancos_mesma_hora = cursor.fetchone()[0]
+
+        # Consulta para contar brancos na hora anterior, nos minutos finais
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM historico 
+            WHERE cor = 'branco' 
+            AND strftime('%H:%M', minuto) >= ? 
+            AND strftime('%H:%M', minuto) <= ?
+        """, (f"{hora-1:02d}:{60 - minutos_hora_anterior:02d}", f"{hora-1:02d}:59"))
+        brancos_hora_anterior = cursor.fetchone()[0]
+
+        # Soma os brancos das duas consultas
+        mini_chuva_recente = brancos_mesma_hora + brancos_hora_anterior
+    else:
+        # Se o minuto atual for maior ou igual a 10, a contagem é feita normalmente
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM historico 
+            WHERE cor = 'branco' 
+            AND strftime('%H:%M', minuto) >= ? 
+            AND strftime('%H:%M', minuto) <= ?
+        """, (f"{hora:02d}:{minuto_atual - 10:02d}", minuto))
+        mini_chuva_recente = cursor.fetchone()[0]
+
+    # Verifica se o minuto atual é menor que 5 para ajustar a contagem dos 5 minutos anteriores
+    if minuto_atual < 5:
+        # Calcula quantos minutos anteriores no mesmo intervalo de hora
+        minutos_anteriores_mesma_hora = minuto_atual
+        # Calcula quantos minutos pegar da hora anterior
+        minutos_hora_anterior = 5 - minutos_anteriores_mesma_hora
+        
+        # Consulta para contar brancos na mesma hora, nos minutos anteriores ao atual
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM historico 
+            WHERE cor = 'branco' 
+            AND strftime('%H:%M', minuto) >= ? 
+            AND strftime('%H:%M', minuto) < ?
+        """, (f"{hora:02d}:{minuto_atual - minutos_anteriores_mesma_hora:02d}", minuto))
+        brancos_mesma_hora = cursor.fetchone()[0]
+
+        # Consulta para contar brancos na hora anterior, nos minutos finais
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM historico 
+            WHERE cor = 'branco' 
+            AND strftime('%H:%M', minuto) >= ? 
+            AND strftime('%H:%M', minuto) <= ?
+        """, (f"{hora-1:02d}:{60 - minutos_hora_anterior:02d}", f"{hora-1:02d}:59"))
+        brancos_hora_anterior = cursor.fetchone()[0]
+
+        # Soma os brancos das duas consultas
+        mini_chuva_atual = brancos_mesma_hora + brancos_hora_anterior
+    else:
+        # Se o minuto atual for maior ou igual a 5, a contagem é feita normalmente
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM historico 
+            WHERE cor = 'branco' 
+            AND strftime('%H:%M', minuto) >= ? 
+            AND strftime('%H:%M', minuto) <= ?
+        """, (f"{hora:02d}:{minuto_atual - 5:02d}", minuto))
+        mini_chuva_atual = cursor.fetchone()[0]
+
+    if mini_chuva_recente >= 2:
+        return 5
+    elif mini_chuva_atual >= 2:
+        return 7
+    else:
+        return 0
+
+def _verificar_recuperacao_casa(minuto, conn, cursor):
+    """Verifica se a casa está em período de recuperação (sem brancos há 30 minutos)."""
+    hora, minuto_atual = map(int, minuto.split(':'))
+
+    # Consulta para verificar se houve algum branco nos últimos 30 minutos
+    cursor.execute("""
+        SELECT COUNT(*) 
+        FROM historico 
+        WHERE cor = 'branco' 
+        AND strftime('%H:%M', minuto) >= ?
+    """, (f"{hora:02d}:{minuto_atual-30:02d}",))
+    
+    brancos_30_min = cursor.fetchone()[0]
+
+    if brancos_30_min == 0:
+        return -8
+    else:
+        return 0
+
+def _calcular_frequencia_brancos(minuto, conn, cursor):
+    """Calcula a frequência de brancos na hora atual."""
+    hora_atual = minuto.split(':')[0]
+    cursor.execute("SELECT COUNT(*) FROM historico WHERE cor = 'branco' AND minuto LIKE ?", (hora_atual + '%',))
+    frequencia_brancos = cursor.fetchone()[0]
+
+    if 5 <= frequencia_brancos <= 7:
+        return 3
+    elif frequencia_brancos >= 8:
+        return 5
+    elif 2 <= frequencia_brancos <= 4:
+        return 2
+    else:
+        return 0
+
+def _verificar_minuto_aguia(puxadores):
+    """Verifica se há minutos águia (4 e 11) entre os puxadores."""
+    score = 0
+    for puxador in puxadores:
+        if puxador['numero'] in [4, 11] and int(puxador['minuto'].split(':')[1]) >= 58 or int(puxador['minuto'].split(':')[1]) <= 8:
+            score += 6
+    return score
+
+def _verificar_padrao_dia_anterior(minuto, conn, cursor):
+    """Verifica se a quantidade de brancos no mesmo horário do dia anterior é similar."""
+    
+    # Obter a data e hora atuais
+    data_atual = datetime.now()
+
+    # Subtrair um dia para obter a data de ontem
+    data_ontem = data_atual - timedelta(days=1)
+
+    # Formatar a data de ontem para a consulta
+    data_ontem_str = data_ontem.strftime('%Y-%m-%d')
+
+    hora_atual = minuto.split(':')[0]
+    
+    # Consulta para obter a quantidade de brancos no mesmo horário do dia anterior
+    cursor.execute("""
+        SELECT COUNT(*) 
+        FROM historico 
+        WHERE cor = 'branco' 
+        AND strftime('%H', minuto) = ?
+        AND strftime('%Y-%m-%d', timestamp) = ?
+    """, (hora_atual, data_ontem_str))
+
+    brancos_dia_anterior = cursor.fetchone()[0]
+
+    # Consulta para obter a quantidade de brancos no horário atual
+    cursor.execute("""
+        SELECT COUNT(*) 
+        FROM historico 
+        WHERE cor = 'branco' 
+        AND strftime('%H', minuto) = ?
+        AND strftime('%Y-%m-%d', timestamp) = strftime('%Y-%m-%d', 'now')
+    """, (hora_atual,))
+
+    brancos_hora_atual = cursor.fetchone()[0]
+
+    # Comparar a quantidade de brancos do dia anterior com a do dia atual
+    if abs(brancos_dia_anterior - brancos_hora_atual) <= 2:
+        return 2
+    else:
+        return 0
+
+def _verificar_espelho(minuto, conn, cursor):
+    """Verifica se há um potencial 'espelho' de um branco anterior."""
+    hora, minuto_atual = map(int, minuto.split(':'))
+
+    # Consulta para encontrar brancos na hora atual e na hora anterior
+    cursor.execute("""
+        SELECT minuto 
+        FROM historico 
+        WHERE cor = 'branco' 
+        AND (strftime('%H', minuto) = ? OR strftime('%H', minuto) = ?)
+        AND minuto < ?
+        ORDER BY minuto DESC
+    """, (f"{hora:02d}", f"{hora-1:02d}", minuto))
+
+    brancos_recentes = [row[0] for row in cursor.fetchall()]
+
+    # Verificar espelhamento
+    for branco_minuto in brancos_recentes:
+        hora_branco, minuto_branco = map(int, branco_minuto.split(':'))
+        diferenca = minuto_atual - minuto_branco
+
+        # Verificar se a diferença é um número primo
+        if diferenca > 1 and all(diferenca % i for i in range(2, int(diferenca**0.5) + 1)):
+            return 6
+
+    return 0
+
+def _verificar_soma_puxadores(puxadores):
+    """Verifica se a soma dos números dos puxadores é maior que 20."""
+    soma_puxadores = sum(p['numero'] for p in puxadores)
+    if soma_puxadores > 20:
+        return 3
+    else:
+        return 0
+
+def calcular_score_intensidade(minuto):
+    """
+    Calcula o "score de intensidade" para um determinado minuto.
+
+    Args:
+        minuto: String do minuto para o qual calcular o score (ex: "07:30").
+
+    Returns:
+        Float com o score de intensidade.
+    """
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    score = 0
+
+    # (A) Convergência de Cálculos
+    puxadores = identificar_puxadores(minuto)
+    minutos_projetados = calcular_minutos_projetados(puxadores)
+    convergencia = {}
+    for m in minutos_projetados:
+        if m in convergencia:
+            convergencia[m] += 1
+        else:
+            convergencia[m] = 1
+    for c in convergencia.values():
+        if c > 1:
+            score += (c - 1) * 3  # +3 pontos para cada cálculo convergente (removendo a contagem base)
+
+    # (B) "Mini-Chuva" de Brancos
+    score += _verificar_mini_chuva(minuto, conn, cursor)
+
+    # (C) Frequência de Brancos na Hora
+    score += _calcular_frequencia_brancos(minuto, conn, cursor)
+
+    # (D) "Recuperação da Casa"
+    score += _verificar_recuperacao_casa(minuto, conn, cursor)
+
+    # (E) Minutos Águia (4 e 11)
+    score += _verificar_minuto_aguia(puxadores)
+
+    # (F) Tempo desde o último branco
+    cursor.execute("SELECT COUNT(*) FROM historico WHERE cor = 'branco' AND minuto < ?", (minuto,))
+    total_brancos = cursor.fetchone()[0]
+    if total_brancos > 0:
+        cursor.execute("SELECT minuto FROM historico WHERE cor = 'branco' ORDER BY minuto DESC LIMIT 1")
+        ultimo_branco = cursor.fetchone()[0]
+        tempo_desde_ultimo_branco = int(minuto.split(':')[1]) - int(ultimo_branco.split(':')[1])
+
+        if tempo_desde_ultimo_branco >= 15:
+            score += 3
+        elif tempo_desde_ultimo_branco >= 6:
+            score += 1
+        elif tempo_desde_ultimo_branco < 5:
+            score -= 2
+    else:
+        score -= 2
+
+    # (G) Padrão do dia anterior
+    score += _verificar_padrao_dia_anterior(minuto, conn, cursor)
+
+    # (H) Soma dos puxadores
+    score += _verificar_soma_puxadores(puxadores)
+
+    # (I) Padrões de Cores (implementação futura)
+
+    # (J) "Espelho"
+    score += _verificar_espelho(minuto, conn, cursor)
+
+    #(K) Força Individual dos Puxadores (implementação futura)
+
+    #(L) Combinação de Puxadores (implementação futura)
+
+    #(M) Combinação de Puxadores com Minutos Águias (implementação futura)
+
+    conn.close()
+    return score
