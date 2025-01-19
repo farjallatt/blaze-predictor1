@@ -57,11 +57,11 @@ A numerologia é a base para a identificação de potenciais oportunidades de ap
 *   **Minuto Projetado:** O minuto calculado com base na soma do número do puxador com o minuto em que ele saiu.
 *   **Taxa de Erro:** Uma tolerância de +/- 1 minuto em relação ao minuto projetado. Isso é considerado devido a variações e atrasos na atualização dos dados da plataforma.
 *   **Convergência:** Quando dois ou mais puxadores, através de seus cálculos, apontam para o mesmo minuto projetado (dentro da taxa de erro), isso é considerado um sinal forte e aumenta a probabilidade de um branco naquele minuto.
-*   **Minutos Águia:** Os números 4 e 11 são considerados "minutos águia" e têm um significado especial na análise. Sua presença como puxadores, em especial no intervalo de minutos entre `58` e `08` de cada hora, é um forte indicador.
+*   **Minutos Águia:** Os números 4 e 11 são considerados "minutos águia" e têm um significado especial na análise. Sua presença como puxadores.
 *   **"Espelho":** A ocorrência de um branco em um minuto que é simétrico a um branco anterior (ex: branco em 00:59 e outro em 01:08, com diferença de 9 minutos, que é um número primo). Esse padrão sugere uma possível repetição e deve ser considerado na análise.
 *   **"Hora Boa"/"Hora Ruim":** Períodos do dia com maior ou menor frequência de brancos. A "hora boa" geralmente apresenta uma alta taxa de acerto dos minutos projetados. Esses períodos são identificados pela análise da frequência de brancos em cada hora do dia.
-*   **"Recuperação da Casa":** Um período prolongado (mais de 30 minutos) sem a ocorrência de brancos. Esse padrão indica que a plataforma pode estar ajustando os padrões para recuperar as perdas, e deve ser tratado com cautela.
-*   **"Mini-Chuva" de Brancos:** Ocorrência de 2 ou mais brancos em um curto intervalo de tempo (5 ou 10 minutos). Esse padrão indica uma alta probabilidade de ocorrência de novos brancos em um futuro próximo.
+*   **"Recuperação da Casa":** Um período prolongado (mais de 15 minutos) sem a ocorrência de brancos. Esse padrão indica que a plataforma pode estar ajustando os padrões para recuperar as perdas, e deve ser tratado com cautela.
+*   **"Mini-Chuva" de Brancos:** Ocorrência de 4 ou mais brancos em um curto intervalo de tempo (5 ou 10 minutos). Esse padrão indica uma alta probabilidade de ocorrência de novos brancos em um futuro próximo.
 
 ### 2.2 Regras de Cálculo
 
@@ -72,24 +72,41 @@ A numerologia é a base para a identificação de potenciais oportunidades de ap
 3.  **Aplicação da Taxa de Erro:** Consideramos uma taxa de erro de +/- 1 minuto para cada minuto projetado.
     *   **Exemplo:** Para o minuto projetado `10:30`, consideramos também `10:29` e `10:31`.
 4.  **Convergência:** Se dois ou mais puxadores, através de seus cálculos, apontarem para o mesmo minuto (dentro da taxa de erro), isso é considerado um sinal de **convergência** e aumenta a probabilidade de um branco naquele minuto.
+  essa é a numerologia da blaze: primeiro o numero da casa depois a cor depois o que o numero da casa significa
+0	Branco	Não se aplica	
+1	Vermelho	Minuto da casa + 1	
+2	Vermelho	Minuto da casa + 2	
+3	Vermelho	Minuto da casa + 3	
+4	Vermelho	Minuto da casa + 4	
+5	Vermelho	Minuto da casa + 5	
+6	Vermelho	Minuto da casa + 6	
+7	Vermelho	Minuto da casa + 7	
+8	Preto	Minuto da casa + 8	
+9	Preto	Minuto da casa + 9	
+10	Preto	Minuto da casa + 10	
+11	Preto	Minuto da casa + 2	
+12	Preto	Minuto da casa + 3	Na numerologia 12 e considerado 1+2=3
+13	Preto	Minuto da casa + 4	Na numerologia 13 e considerado 1+3=4
+14	Preto	Minuto da casa + 5	Na numerologia 14 e considerado 1+4=5
 
+os numeros 4 e 11 são considerados minutos "aguias" e passam a valer como "+2 na soma do calculo" essa consideração SOMENTE entra em questão no calculo do branco, quando estamos analisando as cores vermelho e preto elas tem valor normal de 4 e 2 em questão.
 ### 2.3 Exemplos Práticos
 
 **Exemplo 1:**
 
 Suponha que um branco saiu em `15:30`. Os puxadores identificados são:
 
-*   `15:28` - `5` vermelho
-*   `15:29` - `11` preto (minuto águia)
-*   `15:31` - `2` preto
-*   `15:32` - `9` vermelho
+*   `15:29` - `5` vermelho
+*   `15:29` - `11` preto 
+*   `15:31` - `2` vermelho
+*   `15:31` - `9` preto
 
 **Cálculos:**
 
-*   `15:28 + 5 = 15:33` (taxa de erro: `15:32`, `15:33`, `15:34`)
-*   `15:29 + 11 = 15:40` (taxa de erro: `15:39`, `15:40`, `15:41`)
-*   `15:31 + 2 = 15:33` (taxa de erro: `15:32`, `15:33`, `15:34`)
-*   `15:32 + 9 = 15:41` (taxa de erro: `15:40`, `15:41`, `15:42`)
+*   `15:29 + 5 = 15:34` (taxa de erro: `15:33`,`15:34`)
+*   `15:29 + 11 = 15:31` (taxa de erro: `15:30`, 15:32`)
+*   `15:31 + 2 = 15:33` (taxa de erro: `15:32`, `15:34`)
+*   `15:32 + 9 = 15:41` (taxa de erro: `15:40`, `15:42`)
 
 **Análise:**
 
@@ -128,14 +145,14 @@ Suponha que um branco saiu em `07:03`
 Analisando o branco que saiu no minuto 01:08
 
 *   **Puxadores:**
-    *   `01:05` - `6` vermelho
-    *   `01:06` - `2` vermelho
+    *   `01:07` - `6` vermelho
+    *   `01:07` - `2` vermelho
     *   `01:09` - `4` vermelho
     *   `01:10` - `8` preto
 
 *   **Cálculos:**
-    *   `01:05 + 6 = 01:11`
-    *   `01:06 + 2 = 01:08`
+    *   `01:07 + 6 = 01:11`
+    *   `01:07 + 2 = 01:08`
     *   `01:09 + 4 = 01:13`
     *   `01:10 + 8 = 01:18`
 
@@ -150,6 +167,195 @@ Analisando o branco que saiu no minuto 01:08
     *   O minuto projetado **`01:08`** (pelo puxador `2` vermelho) coincide com o minuto do branco, indicando uma previsão acertada pela numerologia.
 *   **Presença dos Minutos Águia:** O puxador `4` vermelho em `01:09` é um **minuto águia**. Embora seu cálculo não aponte diretamente para 01:08, sua presença indica que a leitura da sequencia do numero 2 com o minuto aguia pode ser uma forte evidencia de branco, e nesse caso a presença desses dois fatores corrobora para um branco exato.
 *   **"Espelho" de 00:59:** O branco de 01:08 "espelha" o branco de 00:59, com uma diferença de 9 minutos, o que reforça a possibilidade do branco
+| **(D) "Recuperação da Casa"**                | -8    |
+| **(E) Minutos Águia (4 e 11)**                | +6    |
+| **(F) Tempo desde o último branco**            | +3/+1/-2|
+| **(G) Padrão do dia anterior**                | +2    |
+| **(H) Soma dos puxadores > 20**                | +3    |
+| **(I) Padrões de Cores**                     | +1    |
+| **(J) "Espelho"**                               | +6    |
+| **(K) Força Individual dos Puxadores**         | +1 a +5 |
+| **(L) Combinação de Puxadores**                | +2 a +8 |
+| **(M) Combinação de Puxadores com Minutos Águias** | +3 a +7 |
+
+### 3.3 Pesos dos Fatores
+
+Os pesos atribuídos a cada fator refletem sua importância relativa na determinação do "score de intensidade".  Esses pesos são **sugestões iniciais** baseadas na experiência e observações do comportamento do jogo "Double".  Eles serão **ajustados e otimizados** ao longo do tempo, com base em testes e na análise de dados coletados.
+
+### 3.4 Cálculo do "Score de Intensidade" (Fórmula)
+
+O "score de intensidade" é calculado somando-se os pontos de cada fator, de acordo com a seguinte fórmula:
+
+**Próximos Passos:**
+
+1.  **Copiar e colar o conteúdo do `README.md` no arquivo `README.md` do seu repositório GitHub.**
+2.  **Implementar as funções auxiliares do "score de intensidade" em `analysis.py`.**
+
+Score de Intensidade = (A * Peso_A) + (B * Peso_B) + (C * Peso_C) + ... + (M * Peso_M)
+
+
+Onde:
+
+*   **A, B, C, ..., M** representam os valores dos fatores (ex: número de cálculos convergentes, presença de "mini-chuva", etc.).
+*   **Peso_A, Peso_B, Peso_C, ..., Peso_M** representam os pesos atribuídos a cada fator.
+
+### 3.5 Exemplos de Cálculo
+
+**Exemplo 1:**
+
+*   Minuto em análise: "15:33"
+*   Convergência de Cálculos: 2 cálculos convergem para 15:33 (+6 pontos)
+*   "Mini-chuva": Ocorreu uma "mini-chuva" nos últimos 5 minutos (+7 pontos)
+*   Frequência de Brancos na Hora: 6 brancos na hora 15:00-15:59 (+3 pontos)
+*   "Recuperação da Casa": Não se aplica (houve brancos recentes) (0 pontos)
+*   Minutos Águia: Um puxador é um minuto águia, e se encaixa no intervalo (+6 pontos)
+*   Tempo desde o último branco: Último branco foi há 8 minutos (+1 ponto)
+*   Padrão do dia anterior: Similar ao dia anterior (+2 pontos)
+*   Soma dos puxadores: 18 (0 pontos)
+*   Padrões de Cores: Sequência de 4 vermelhos (+1 ponto)
+*   "Espelho": Não se aplica (0 pontos)
+
+**Score de Intensidade:** 6 + 7 + 3 + 0 + 6 + 1 + 2 + 0 + 1 + 0 = **26**
+
+**Exemplo 2:**
+
+*   Minuto em análise: "22:15"
+*   Convergência de Cálculos: Nenhum cálculo converge para 22:15 (0 pontos)
+*   "Mini-chuva": Não ocorreu nos últimos 10 minutos (0 pontos)
+*   Frequência de Brancos na Hora: 3 brancos na hora 22:00-22:59 (+2 pontos)
+*   "Recuperação da Casa": Não se aplica (0 pontos)
+*   Minutos Águia: Nenhum puxador é minuto águia (0 pontos)
+*   Tempo desde o último branco: Último branco foi há 2 minutos (-2 pontos)
+*   Padrão do dia anterior: Diferente do dia anterior (0 pontos)
+*   Soma dos puxadores: 25 (+3 pontos)
+*   Padrões de Cores: Sequência de 2 pretos (0 pontos)
+*   "Espelho": Não se aplica (0 pontos)
+
+**Score de Intensidade:** 0 + 0 + 2 + 0 + 0 - 2 + 0 + 3 + 0 + 0 = **3**
+
+**Exemplo 3:**
+
+*   Minuto em análise: "00:59"
+*   `00:55` - `4` vermelho (águia)
+*   `00:58` - `9` preto
+*   `01:00` - `6` preto
+*   `01:01` - `8` preto
+
+**Cálculos:**
+
+*   `00:55 + 4 = 00:59`
+*   `00:58 + 9 = 01:07`
+*   `01:00 + 6 = 01:06`
+*   `01:01 + 8 = 01:09`
+
+**Minutos Projetados (com taxa de erro):**
+
+*   De `00:59`: `00:58`, `00:59`, `01:00`
+*   De `01:07`: `01:06`, `01:07`, `01:08`
+*   De `01:06`: `01:05`, `01:06`, `01:07`
+*   De `01:09`: `01:08`, `01:09`, `01:10`
+
+*   **Convergência:** O minuto `01:06`, `01:07`, `01:08` são sugeridos, mas não o minuto em que saiu o branco.
+*   **Score de Intensidade:**
+    *   Convergência: + 6 (para os três minutos)
+    *   "Mini-chuva": +7 (brancos em 00:59, 01:08 e 01:18)
+    *   Frequência na Hora: +5 (mais de 8 brancos)
+    *   "Recuperação da Casa": 0
+    *   "Minuto Águia": +6 (número 4 como puxador e entre os minutos `58` e `08`)
+    *   Tempo desde o último branco: +1 (o último branco foi a 9 minutos, intervalo de tempo ideal.)
+    *   Padrão do dia anterior: +2 (considerando apenas como base)
+    *   Soma dos puxadores > 20: 0
+    *   **Total: +27**
+
+**Observações:**
+
+*   O "score de intensidade" é uma ferramenta **dinâmica** e será constantemente **reavaliado e ajustado** com base em novos dados e observações.
+*   O objetivo é que o "score de intensidade" seja um **indicador confiável** da probabilidade de ocorrência do branco, permitindo que o bot envie sinais de alta precisão.
+
+## 4. Arquitetura do Sistema
+
+O Blaze Predictor é composto por quatro módulos principais: `scraper.py`, `analysis.py`, `test_analysis.py`, e `telegram_bot.py` (a ser desenvolvido). Cada módulo tem uma responsabilidade específica e interage com os outros de forma modular e bem definida.
+
+### 4.1 Diagrama de Blocos
+
++-----------------+       +-----------------+       +-----------------+
+|   scraper.py    | ----> |  blaze_predictor.db | <---- | analysis.py     |
++-----------------+       +-----------------+       +-----------------+
+^                                                     |
+|                                                     v
+|                                            +-----------------+
+|                                            | test_analysis.py|
+|                                            +-----------------+
+|
+| (Futuro)
+v
++-----------------+
+| telegram_bot.py |
++-----------------+
+
+
+### 4.2 Descrição dos Módulos
+
+#### 4.2.1 `scraper.py`
+
+*   **Responsabilidade:** Coletar dados em tempo real do jogo "Double" da Blaze, através do site *Tip Miner*.
+*   **Funcionalidades:**
+    *   Realizar requisições HTTP para o *Tip Miner*.
+    *   Analisar o HTML da página e extrair as informações relevantes das rodadas (cor, número e minuto).
+    *   Armazenar os dados coletados no banco de dados SQLite (`blaze_predictor.db`).
+    *   Chamar as funções do módulo `analysis.py` para calcular a numerologia e o "score de intensidade" para cada nova rodada.
+    *   Agendar a execução da coleta de dados a cada 30 segundos.
+*   **Tecnologias:** `requests`, `beautifulsoup4`, `sqlite3`, `schedule`, `python-dotenv`.
+
+#### 4.2.2 `analysis.py`
+
+*   **Responsabilidade:**  Processar os dados coletados, aplicar as regras da numerologia, calcular o "score de intensidade" e, futuramente, realizar previsões usando o modelo LSTM.
+*   **Funcionalidades:**
+    *   `identificar_puxadores(minuto_branco)`:  Identifica os quatro puxadores (duas rodadas antes e duas depois) de um determinado minuto em que o branco ocorreu.
+    *   `calcular_minutos_projetados(puxadores)`: Calcula os minutos projetados para a ocorrência do branco com base na numerologia dos puxadores.
+    *   `calcular_score_intensidade(minuto)`: Calcula o "score de intensidade" para um determinado minuto, considerando diversos fatores.
+    *   Funções auxiliares para o cálculo do "score de intensidade":
+        *   `_verificar_mini_chuva(minuto, conn, cursor)`: Verifica a ocorrência de "mini-chuvas" de brancos.
+        *   `_verificar_recuperacao_casa(minuto, conn, cursor)`: Verifica se a casa está em período de recuperação.
+        *   `_calcular_frequencia_brancos(minuto, conn, cursor)`: Calcula a frequência de brancos na hora atual.
+        *   `_verificar_minuto_aguia(puxadores)`: Verifica a presença de minutos águia (4 e 11) entre os puxadores.
+        *   `_verificar_padrao_dia_anterior(minuto, conn, cursor)`: Verifica a similaridade com o padrão do dia anterior.
+        *   `_verificar_espelho(minuto, conn, cursor)`: Verifica a ocorrência de um padrão de "espelho".
+        *   `_verificar_soma_puxadores(puxadores)`: Verifica se a soma dos números dos puxadores é maior que 20.
+*   **Tecnologias:** `sqlite3`, `python-dotenv`, `datetime`.
+
+#### 4.2.3 `test_analysis.py`
+
+*   **Responsabilidade:**  Testar as funções do módulo `analysis.py` para garantir que elas estão funcionando corretamente e produzindo os resultados esperados.
+*   **Funcionalidades:**
+    *   Testes unitários para `calcular_minutos_projetados`, `identificar_puxadores` e `calcular_score_intensidade`, e para as funções auxiliares.
+    *   Configuração de um banco de dados temporário para os testes.
+*   **Tecnologias:** `unittest`, `sqlite3`, `dotenv`.
+
+#### 4.2.4 `telegram_bot.py` (Futuro)
+
+*   **Responsabilidade:** Fornecer uma interface para o usuário interagir com o sistema e receber os sinais de apostas.
+*   **Funcionalidades:**
+    *   Enviar notificações (sinais) de alta probabilidade para apostas no branco, com base no "score de intensidade".
+    *   Permitir que o usuário consulte o "score de intensidade" para um determinado minuto.
+    *   Exibir as últimas rodadas coletadas.
+    *   Fornecer estatísticas sobre o desempenho do sistema.
+    *   Implementar comandos para iniciar/parar o sistema.
+*   **Tecnologias:** `python-telegram-bot`, `sqlite3`.
+
+### 4.3 Fluxo de Dados
+
+1.  O `scraper.py` acessa o site *Tip Miner* a cada 30 segundos e extrai os dados das novas rodadas (cor, número e minuto).
+2.  Os dados coletados são armazenados no banco de dados SQLite (`blaze_predictor.db`).
+3.  O `scraper.py` chama as funções do `analysis.py` para:
+    *   Identificar os puxadores para o último minuto coletado.
+    *   Calcular os minutos projetados com base na numerologia.
+    *   Calcular o "score de intensidade" para o último minuto coletado.
+4.  O `scraper.py` atualiza o banco de dados com o "score de intensidade" calculado.
+5.  (Futuro) O `telegram_bot.py` consulta o banco de dados, verifica o "score de intensidade" e envia sinais de alta probabilidade para o usuário.
+
+3.  **Escrever os testes unitários para essas funções em `test_analysis.py`.**
+*   
 *   *   **4.3.1. Coleta de Dados (`scraper.py`)**: O `scraper.py` é responsável por coletar dados do site Tip Miner. Ele faz isso a cada 30 segundos e armazena os dados no banco de dados.
 *   **4.3.2. Análise de Dados (`analysis.py`)**: O `analysis.py` processa os dados coletados, aplica as regras da numerologia e calcula o "score de intensidade". Ele atualiza o banco de dados com esses valores.
 *   **4.3.3. Testes (`test_analysis.py`)**: O `test_analysis.py` contém testes unitários para as funções do `analysis.py`, garantindo que a numerologia e o cálculo do "score de intensidade" estejam corretos.
@@ -571,7 +777,7 @@ O Blaze Predictor será um sistema em constante evolução. A manutenção e o a
 
 *   **Melhorias na Previsão do Branco:**  A principal área de foco para futuras melhorias será a previsão do branco. Isso inclui a exploração de novos fatores para o "score de intensidade", a otimização dos pesos dos fatores existentes e a implementação de técnicas mais avançadas de Machine Learning.
 *   **Previsão de Vermelho/Preto:**  O modelo LSTM será aprimorado para fornecer previsões mais precisas para as cores vermelha e preta.
-*   **Integração com a Blaze:**  Em um estágio mais avançado, o sistema poderá ser integrado diretamente à API da Blaze para automatizar a realização de apostas.
+
 *   **Interface Gráfica:**  Uma interface gráfica amigável poderá ser desenvolvida para facilitar a interação com o sistema e a visualização de dados.
 *   **Análise de Tendências:**  O sistema poderá ser expandido para realizar análises mais aprofundadas das tendências do jogo, identificando padrões de comportamento da plataforma em diferentes horários e dias da semana.
 *   **Gestão de Banca:**  Funcionalidades de gestão de banca poderão ser adicionadas para auxiliar o usuário a controlar seus investimentos e gerenciar seus riscos.
@@ -601,8 +807,8 @@ A colaboração e o feedback contínuo entre os membros da equipe de desenvolvim
 | Minutos Águia        | Os números 4 e 11, que possuem um significado especial na análise e aumentam o "score de intensidade" quando presentes como puxadores.                                                                                      |
 | "Espelho"           | Um padrão onde um branco ocorre em um minuto simétrico a um branco anterior (ex: branco em 00:59 e outro em 01:08, com diferença de 9 minutos, que é um número primo).                                                           |
 | "Hora Boa"/"Hora Ruim" | Períodos do dia com maior ou menor frequência de brancos.                                                                                                                                                                   |
-| "Recuperação da Casa" | Um período prolongado (mais de 30 minutos) sem a ocorrência de brancos, indicando que a plataforma pode estar ajustando os padrões para recuperar as perdas.                                                                  |
-| "Mini-Chuva" de Brancos | Ocorrência de 2 ou mais brancos em um curto intervalo de tempo (5 ou 10 minutos).                                                                                                                                        |
+| "Recuperação da Casa" | Um período prolongado (mais de 15 minutos) sem a ocorrência de brancos, indicando que a plataforma pode estar ajustando os padrões para recuperar as perdas.                                                                  |
+| "Mini-Chuva" de Brancos | Ocorrência de 4 ou mais brancos em um curto intervalo de tempo (5 ou 10 minutos).                                                                                                                                        |
 | "Score de Intensidade" | Uma métrica numérica que quantifica a força de um sinal para a previsão de um branco em um determinado minuto.                                                                                                                |
 | Web Scraping         | Processo de extração automatizada de dados de websites.                                                                                                                                                                    |
 | LSTM                 | Long Short-Term Memory, um tipo de rede neural recorrente (RNN) adequada para analisar sequências de dados temporais.                                                                                                          |
@@ -629,78 +835,6 @@ A colaboração e o feedback contínuo entre os membros da equipe de desenvolvim
 
 ### 13.3 Exemplos Detalhados de Cálculo da Numerologia
 
-#### 13.3.1 Exemplo 1
-
-**Branco em 15:30**
-
-*   **Puxadores:**
-    *   `15:28` - `5` vermelho
-    *   `15:29` - `11` preto (minuto águia)
-    *   `15:31` - `2` preto
-    *   `15:32` - `9` vermelho
-
-*   **Cálculos:**
-    *   `15:28 + 5 = 15:33` (taxa de erro: `15:32`, `15:33`, `15:34`)
-    *   `15:29 + 11 = 15:40` (taxa de erro: `15:39`, `15:40`, `15:41`)
-    *   `15:31 + 2 = 15:33` (taxa de erro: `15:32`, `15:33`, `15:34`)
-    *   `15:32 + 9 = 15:41` (taxa de erro: `15:40`, `15:41`, `15:42`)
-
-*   **Análise:**
-    *   Há uma **convergência** para o minuto `15:33` (e também `15:32` e `15:34`, considerando a taxa de erro), pois dois puxadores diferentes apontam para ele.
-    *   O puxador `11` preto em `15:29` é um **minuto águia**, o que reforça a probabilidade de um branco.
-
-#### 13.3.2 Exemplo 2
-
-**Branco em 07:03**
-
-*   **Puxadores:**
-    *   `07:02` - `1` vermelho (primeira rodada)
-    *   `07:02` - `7` vermelho (segunda rodada)
-    *   `07:03` - `12` preto (segunda rodada)
-    *   `07:04` - `10` preto (primeira rodada)
-
-*   **Cálculos:**
-    *   `07:02 + 1 = 07:03`
-    *   `07:02 + 7 = 07:09`
-    *   `07:03 + 3 = 07:06`
-    *   `07:04 + 10 = 07:14`
-
-*   **Minutos Projetados (com taxa de erro):**
-    *   De `07:03`: `07:02`, `07:03`, `07:04`
-    *   De `07:09`: `07:08`, `07:09`, `07:10`
-    *   De `07:06`: `07:05`, `07:06`, `07:07`
-    *   De `07:14`: `07:13`, `07:14`, `07:15`
-
-*   **Análise:**
-    *   O minuto projetado **`07:03`** (pelo puxador `1` vermelho) coincide com o minuto do branco, indicando uma previsão acertada pela numerologia.
-
-#### 13.3.3 Exemplo 3
-
-**Branco em 01:08**
-
-*   **Puxadores:**
-    *   `01:05` - `6` vermelho
-    *   `01:06` - `2` vermelho
-    *   `01:09` - `4` vermelho (minuto águia)
-    *   `01:10` - `8` preto
-
-*   **Cálculos:**
-    *   `01:05 + 6 = 01:11`
-    *   `01:06 + 2 = 01:08`
-    *   `01:09 + 4 = 01:13`
-    *   `01:10 + 8 = 01:18`
-
-*   **Minutos Projetados (com taxa de erro):**
-    *   De `01:11`: `01:10`, `01:11`, `01:12`
-    *   De `01:08`: `01:07`, `01:08`, `01:09`
-    *   De `01:13`: `01:12`, `01:13`, `01:14`
-    *   De `01:18`: `01:17`, `01:18`, `01:19`
-
-*   **Análise:**
-    *   O minuto projetado **`01:08`** (pelo puxador `2` vermelho) coincide com o minuto do branco, indicando uma previsão acertada pela numerologia.
-    *   O puxador `4` vermelho em `01:09` é um **minuto águia** e está dentro do intervalo de `58` a `08`, o que reforça a probabilidade de um branco, e a combinação com o numero `2` como puxador aumenta mais ainda as chances de acerto.
-    *   O branco de 01:08 "espelha" o branco de 00:59, com uma diferença de 9 minutos.
-
 ### 13.4 Exemplos Detalhados de Fatores do "Score de Intensidade"
 
 #### 13.4.1 Exemplo de Convergência
@@ -708,9 +842,9 @@ A colaboração e o feedback contínuo entre os membros da equipe de desenvolvim
 *   **Minuto do Branco:** 14:25
 *   **Puxadores:**
     *   14:23 - 7 vermelho
-    *   14:24 - 3 preto
-    *   14:26 - 9 vermelho
-    *   14:27 - 1 preto
+    *   14:24 - 3 vermelho
+    *   14:26 - 9 preto
+    *   14:27 - 1 vermelho
 *   **Cálculos:**
     *   14:23 + 7 = 14:30 (Taxa de erro: 14:29, 14:30, 14:31)
     *   14:24 + 3 = 14:27 (Taxa de erro: 14:26, 14:27, 14:28)
@@ -744,7 +878,7 @@ A colaboração e o feedback contínuo entre os membros da equipe de desenvolvim
     *   11:03 - 9 preto
     *   11:05 - 12 preto
     *   11:06 - 6 vermelho
-*   **Cálculo do Minuto Águia:** 11:02 + 4 = 11:06 (dentro da taxa de erro para 11:04)
+*   **Cálculo do Minuto Águia:** 11:02 + 2 = 11:04 (dentro da taxa de erro para 11:04)
 *   **Pontuação:** +6 pontos, pois o puxador 4 é um Minuto Águia e contribui para a previsão do branco.
 
 #### 13.4.4 Exemplo de "Mini-Chuva"
@@ -829,11 +963,11 @@ O "espelho" é um padrão onde um branco ocorre em um minuto simétrico a um bra
 
 **9. O que é uma "mini-chuva" de brancos?**
 
-Uma "mini-chuva" de brancos é a ocorrência de 2 ou mais brancos em um curto intervalo de tempo (5 ou 10 minutos).
+Uma "mini-chuva" de brancos é a ocorrência de 4 ou mais brancos em um curto intervalo de tempo (5 ou 10 minutos).
 
 **10. O que significa "recuperação da casa"?**
 
-"Recuperação da casa" é um período prolongado (mais de 30 minutos) sem a ocorrência de brancos, indicando que a plataforma pode estar ajustando os padrões para recuperar as perdas.
+"Recuperação da casa" é um período prolongado (mais de 15 minutos) sem a ocorrência de brancos, indicando que a plataforma pode estar ajustando os padrões para recuperar as perdas.
 
 **11. O Blaze Predictor é garantia de lucro?**
 
@@ -1016,194 +1150,5 @@ O Blaze Predictor é um projeto experimental e em desenvolvimento. Os resultados
 
 **Fim do `README.md`**
 
-esses foram alguns pontos que foram "perdidos" no caminho então vou deixa-los aqui para armazenar na memoria
-| **(D) "Recuperação da Casa"**                | -8    |
-| **(E) Minutos Águia (4 e 11)**                | +6    |
-| **(F) Tempo desde o último branco**            | +3/+1/-2|
-| **(G) Padrão do dia anterior**                | +2    |
-| **(H) Soma dos puxadores > 20**                | +3    |
-| **(I) Padrões de Cores**                     | +1    |
-| **(J) "Espelho"**                               | +6    |
-| **(K) Força Individual dos Puxadores**         | +1 a +5 |
-| **(L) Combinação de Puxadores**                | +2 a +8 |
-| **(M) Combinação de Puxadores com Minutos Águias** | +3 a +7 |
-
-### 3.3 Pesos dos Fatores
-
-Os pesos atribuídos a cada fator refletem sua importância relativa na determinação do "score de intensidade".  Esses pesos são **sugestões iniciais** baseadas na experiência e observações do comportamento do jogo "Double".  Eles serão **ajustados e otimizados** ao longo do tempo, com base em testes e na análise de dados coletados.
-
-### 3.4 Cálculo do "Score de Intensidade" (Fórmula)
-
-O "score de intensidade" é calculado somando-se os pontos de cada fator, de acordo com a seguinte fórmula:
-
-**Próximos Passos:**
-
-1.  **Copiar e colar o conteúdo do `README.md` no arquivo `README.md` do seu repositório GitHub.**
-2.  **Implementar as funções auxiliares do "score de intensidade" em `analysis.py`.**
-
-Score de Intensidade = (A * Peso_A) + (B * Peso_B) + (C * Peso_C) + ... + (M * Peso_M)
-
-
-Onde:
-
-*   **A, B, C, ..., M** representam os valores dos fatores (ex: número de cálculos convergentes, presença de "mini-chuva", etc.).
-*   **Peso_A, Peso_B, Peso_C, ..., Peso_M** representam os pesos atribuídos a cada fator.
-
-### 3.5 Exemplos de Cálculo
-
-**Exemplo 1:**
-
-*   Minuto em análise: "15:33"
-*   Convergência de Cálculos: 2 cálculos convergem para 15:33 (+6 pontos)
-*   "Mini-chuva": Ocorreu uma "mini-chuva" nos últimos 5 minutos (+7 pontos)
-*   Frequência de Brancos na Hora: 6 brancos na hora 15:00-15:59 (+3 pontos)
-*   "Recuperação da Casa": Não se aplica (houve brancos recentes) (0 pontos)
-*   Minutos Águia: Um puxador é um minuto águia, e se encaixa no intervalo (+6 pontos)
-*   Tempo desde o último branco: Último branco foi há 8 minutos (+1 ponto)
-*   Padrão do dia anterior: Similar ao dia anterior (+2 pontos)
-*   Soma dos puxadores: 18 (0 pontos)
-*   Padrões de Cores: Sequência de 4 vermelhos (+1 ponto)
-*   "Espelho": Não se aplica (0 pontos)
-
-**Score de Intensidade:** 6 + 7 + 3 + 0 + 6 + 1 + 2 + 0 + 1 + 0 = **26**
-
-**Exemplo 2:**
-
-*   Minuto em análise: "22:15"
-*   Convergência de Cálculos: Nenhum cálculo converge para 22:15 (0 pontos)
-*   "Mini-chuva": Não ocorreu nos últimos 10 minutos (0 pontos)
-*   Frequência de Brancos na Hora: 3 brancos na hora 22:00-22:59 (+2 pontos)
-*   "Recuperação da Casa": Não se aplica (0 pontos)
-*   Minutos Águia: Nenhum puxador é minuto águia (0 pontos)
-*   Tempo desde o último branco: Último branco foi há 2 minutos (-2 pontos)
-*   Padrão do dia anterior: Diferente do dia anterior (0 pontos)
-*   Soma dos puxadores: 25 (+3 pontos)
-*   Padrões de Cores: Sequência de 2 pretos (0 pontos)
-*   "Espelho": Não se aplica (0 pontos)
-
-**Score de Intensidade:** 0 + 0 + 2 + 0 + 0 - 2 + 0 + 3 + 0 + 0 = **3**
-
-**Exemplo 3:**
-
-*   Minuto em análise: "00:59"
-*   `00:55` - `4` vermelho (águia)
-*   `00:58` - `9` preto
-*   `01:00` - `6` preto
-*   `01:01` - `8` preto
-
-**Cálculos:**
-
-*   `00:55 + 4 = 00:59`
-*   `00:58 + 9 = 01:07`
-*   `01:00 + 6 = 01:06`
-*   `01:01 + 8 = 01:09`
-
-**Minutos Projetados (com taxa de erro):**
-
-*   De `00:59`: `00:58`, `00:59`, `01:00`
-*   De `01:07`: `01:06`, `01:07`, `01:08`
-*   De `01:06`: `01:05`, `01:06`, `01:07`
-*   De `01:09`: `01:08`, `01:09`, `01:10`
-
-*   **Convergência:** O minuto `01:06`, `01:07`, `01:08` são sugeridos, mas não o minuto em que saiu o branco.
-*   **Score de Intensidade:**
-    *   Convergência: + 6 (para os três minutos)
-    *   "Mini-chuva": +7 (brancos em 00:59, 01:08 e 01:18)
-    *   Frequência na Hora: +5 (mais de 8 brancos)
-    *   "Recuperação da Casa": 0
-    *   "Minuto Águia": +6 (número 4 como puxador e entre os minutos `58` e `08`)
-    *   Tempo desde o último branco: +1 (o último branco foi a 9 minutos, intervalo de tempo ideal.)
-    *   Padrão do dia anterior: +2 (considerando apenas como base)
-    *   Soma dos puxadores > 20: 0
-    *   **Total: +27**
-
-**Observações:**
-
-*   O "score de intensidade" é uma ferramenta **dinâmica** e será constantemente **reavaliado e ajustado** com base em novos dados e observações.
-*   O objetivo é que o "score de intensidade" seja um **indicador confiável** da probabilidade de ocorrência do branco, permitindo que o bot envie sinais de alta precisão.
-
-## 4. Arquitetura do Sistema
-
-O Blaze Predictor é composto por quatro módulos principais: `scraper.py`, `analysis.py`, `test_analysis.py`, e `telegram_bot.py` (a ser desenvolvido). Cada módulo tem uma responsabilidade específica e interage com os outros de forma modular e bem definida.
-
-### 4.1 Diagrama de Blocos
-
-+-----------------+       +-----------------+       +-----------------+
-|   scraper.py    | ----> |  blaze_predictor.db | <---- | analysis.py     |
-+-----------------+       +-----------------+       +-----------------+
-^                                                     |
-|                                                     v
-|                                            +-----------------+
-|                                            | test_analysis.py|
-|                                            +-----------------+
-|
-| (Futuro)
-v
-+-----------------+
-| telegram_bot.py |
-+-----------------+
-
-
-### 4.2 Descrição dos Módulos
-
-#### 4.2.1 `scraper.py`
-
-*   **Responsabilidade:** Coletar dados em tempo real do jogo "Double" da Blaze, através do site *Tip Miner*.
-*   **Funcionalidades:**
-    *   Realizar requisições HTTP para o *Tip Miner*.
-    *   Analisar o HTML da página e extrair as informações relevantes das rodadas (cor, número e minuto).
-    *   Armazenar os dados coletados no banco de dados SQLite (`blaze_predictor.db`).
-    *   Chamar as funções do módulo `analysis.py` para calcular a numerologia e o "score de intensidade" para cada nova rodada.
-    *   Agendar a execução da coleta de dados a cada 30 segundos.
-*   **Tecnologias:** `requests`, `beautifulsoup4`, `sqlite3`, `schedule`, `python-dotenv`.
-
-#### 4.2.2 `analysis.py`
-
-*   **Responsabilidade:**  Processar os dados coletados, aplicar as regras da numerologia, calcular o "score de intensidade" e, futuramente, realizar previsões usando o modelo LSTM.
-*   **Funcionalidades:**
-    *   `identificar_puxadores(minuto_branco)`:  Identifica os quatro puxadores (duas rodadas antes e duas depois) de um determinado minuto em que o branco ocorreu.
-    *   `calcular_minutos_projetados(puxadores)`: Calcula os minutos projetados para a ocorrência do branco com base na numerologia dos puxadores.
-    *   `calcular_score_intensidade(minuto)`: Calcula o "score de intensidade" para um determinado minuto, considerando diversos fatores.
-    *   Funções auxiliares para o cálculo do "score de intensidade":
-        *   `_verificar_mini_chuva(minuto, conn, cursor)`: Verifica a ocorrência de "mini-chuvas" de brancos.
-        *   `_verificar_recuperacao_casa(minuto, conn, cursor)`: Verifica se a casa está em período de recuperação.
-        *   `_calcular_frequencia_brancos(minuto, conn, cursor)`: Calcula a frequência de brancos na hora atual.
-        *   `_verificar_minuto_aguia(puxadores)`: Verifica a presença de minutos águia (4 e 11) entre os puxadores.
-        *   `_verificar_padrao_dia_anterior(minuto, conn, cursor)`: Verifica a similaridade com o padrão do dia anterior.
-        *   `_verificar_espelho(minuto, conn, cursor)`: Verifica a ocorrência de um padrão de "espelho".
-        *   `_verificar_soma_puxadores(puxadores)`: Verifica se a soma dos números dos puxadores é maior que 20.
-*   **Tecnologias:** `sqlite3`, `python-dotenv`, `datetime`.
-
-#### 4.2.3 `test_analysis.py`
-
-*   **Responsabilidade:**  Testar as funções do módulo `analysis.py` para garantir que elas estão funcionando corretamente e produzindo os resultados esperados.
-*   **Funcionalidades:**
-    *   Testes unitários para `calcular_minutos_projetados`, `identificar_puxadores` e `calcular_score_intensidade`, e para as funções auxiliares.
-    *   Configuração de um banco de dados temporário para os testes.
-*   **Tecnologias:** `unittest`, `sqlite3`, `dotenv`.
-
-#### 4.2.4 `telegram_bot.py` (Futuro)
-
-*   **Responsabilidade:** Fornecer uma interface para o usuário interagir com o sistema e receber os sinais de apostas.
-*   **Funcionalidades:**
-    *   Enviar notificações (sinais) de alta probabilidade para apostas no branco, com base no "score de intensidade".
-    *   Permitir que o usuário consulte o "score de intensidade" para um determinado minuto.
-    *   Exibir as últimas rodadas coletadas.
-    *   Fornecer estatísticas sobre o desempenho do sistema.
-    *   Implementar comandos para iniciar/parar o sistema.
-*   **Tecnologias:** `python-telegram-bot`, `sqlite3`.
-
-### 4.3 Fluxo de Dados
-
-1.  O `scraper.py` acessa o site *Tip Miner* a cada 30 segundos e extrai os dados das novas rodadas (cor, número e minuto).
-2.  Os dados coletados são armazenados no banco de dados SQLite (`blaze_predictor.db`).
-3.  O `scraper.py` chama as funções do `analysis.py` para:
-    *   Identificar os puxadores para o último minuto coletado.
-    *   Calcular os minutos projetados com base na numerologia.
-    *   Calcular o "score de intensidade" para o último minuto coletado.
-4.  O `scraper.py` atualiza o banco de dados com o "score de intensidade" calculado.
-5.  (Futuro) O `telegram_bot.py` consulta o banco de dados, verifica o "score de intensidade" e envia sinais de alta probabilidade para o usuário.
-
-3.  **Escrever os testes unitários para essas funções em `test_analysis.py`.**
 
 Estou pronto para continuar ajudando você com a implementação e os testes.  Vamos em frente!
