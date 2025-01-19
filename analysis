@@ -79,96 +79,62 @@ def identificar_puxadores(minuto_branco):
     # Retorna apenas os 4 puxadores mais próximos do minuto_branco
     return puxadores[:4]
 
+# Substitua a função _verificar_mini_chuva inteiramente pelo código abaixo:
+
 def _verificar_mini_chuva(minuto, conn, cursor):
     """Verifica se ocorreu uma "mini-chuva" de brancos antes do minuto especificado."""
     hora, minuto_atual = map(int, minuto.split(':'))
 
-    # Verifica se o minuto atual é menor que 10 para ajustar a contagem dos 10 minutos anteriores
-    if minuto_atual < 10:
-        # Calcula quantos minutos anteriores no mesmo intervalo de hora
-        minutos_anteriores_mesma_hora = minuto_atual
-        # Calcula quantos minutos pegar da hora anterior
-        minutos_hora_anterior = 10 - minutos_anteriores_mesma_hora
-        
-        # Consulta para contar brancos na mesma hora, nos minutos anteriores ao atual
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM historico 
-            WHERE cor = 'branco' 
-            AND strftime('%H:%M', minuto) >= ? 
-            AND strftime('%H:%M', minuto) < ?
-        """, (f"{hora:02d}:{minuto_atual - minutos_anteriores_mesma_hora:02d}", minuto))
-        brancos_mesma_hora = cursor.fetchone()[0]
+    # Contagem de brancos nos últimos 10 minutos
+    brancos_ultimos_10_min = _contar_brancos_intervalo(cursor, minuto, hora, 10)
 
-        # Consulta para contar brancos na hora anterior, nos minutos finais
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM historico 
-            WHERE cor = 'branco' 
-            AND strftime('%H:%M', minuto) >= ? 
-            AND strftime('%H:%M', minuto) <= ?
-        """, (f"{hora-1:02d}:{60 - minutos_hora_anterior:02d}", f"{hora-1:02d}:59"))
-        brancos_hora_anterior = cursor.fetchone()[0]
+    # Contagem de brancos nos últimos 5 minutos
+    brancos_ultimos_5_min = _contar_brancos_intervalo(cursor, minuto, hora, 5)
 
-        # Soma os brancos das duas consultas
-        mini_chuva_recente = brancos_mesma_hora + brancos_hora_anterior
-    else:
-        # Se o minuto atual for maior ou igual a 10, a contagem é feita normalmente
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM historico 
-            WHERE cor = 'branco' 
-            AND strftime('%H:%M', minuto) >= ? 
-            AND strftime('%H:%M', minuto) <= ?
-        """, (f"{hora:02d}:{minuto_atual - 10:02d}", minuto))
-        mini_chuva_recente = cursor.fetchone()[0]
-
-    # Verifica se o minuto atual é menor que 5 para ajustar a contagem dos 5 minutos anteriores
-    if minuto_atual < 5:
-        # Calcula quantos minutos anteriores no mesmo intervalo de hora
-        minutos_anteriores_mesma_hora = minuto_atual
-        # Calcula quantos minutos pegar da hora anterior
-        minutos_hora_anterior = 5 - minutos_anteriores_mesma_hora
-        
-        # Consulta para contar brancos na mesma hora, nos minutos anteriores ao atual
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM historico 
-            WHERE cor = 'branco' 
-            AND strftime('%H:%M', minuto) >= ? 
-            AND strftime('%H:%M', minuto) < ?
-        """, (f"{hora:02d}:{minuto_atual - minutos_anteriores_mesma_hora:02d}", minuto))
-        brancos_mesma_hora = cursor.fetchone()[0]
-
-        # Consulta para contar brancos na hora anterior, nos minutos finais
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM historico 
-            WHERE cor = 'branco' 
-            AND strftime('%H:%M', minuto) >= ? 
-            AND strftime('%H:%M', minuto) <= ?
-        """, (f"{hora-1:02d}:{60 - minutos_hora_anterior:02d}", f"{hora-1:02d}:59"))
-        brancos_hora_anterior = cursor.fetchone()[0]
-
-        # Soma os brancos das duas consultas
-        mini_chuva_atual = brancos_mesma_hora + brancos_hora_anterior
-    else:
-        # Se o minuto atual for maior ou igual a 5, a contagem é feita normalmente
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM historico 
-            WHERE cor = 'branco' 
-            AND strftime('%H:%M', minuto) >= ? 
-            AND strftime('%H:%M', minuto) <= ?
-        """, (f"{hora:02d}:{minuto_atual - 5:02d}", minuto))
-        mini_chuva_atual = cursor.fetchone()[0]
-
-    if mini_chuva_recente >= 2:
-        return 5
-    elif mini_chuva_atual >= 2:
-        return 7
+    if brancos_ultimos_10_min >= 2:
+        return 5  # Pontuação para "mini-chuva" de 10 minutos
+    elif brancos_ultimos_5_min >= 2:
+        return 7  # Pontuação para "mini-chuva" de 5 minutos
     else:
         return 0
+
+# Função auxiliar para contar brancos em um intervalo de tempo
+def _contar_brancos_intervalo(cursor, minuto, hora, intervalo):
+    """Conta o número de brancos em um intervalo de tempo especificado antes do minuto atual."""
+    if minuto_atual < intervalo:
+        minutos_anteriores_mesma_hora = minuto_atual
+        minutos_hora_anterior = intervalo - minutos_anteriores_mesma_hora
+        brancos_mesma_hora = cursor.execute("""
+            SELECT COUNT(*)
+            FROM historico
+            WHERE cor = 'branco'
+            AND strftime('%H:%M', minuto) >= ?
+            AND strftime('%H:%M', minuto) < ?
+        """, (f"{hora:02d}:{minuto_atual - minutos_anteriores_mesma_hora:02d}", minuto)).fetchone()[0]
+
+        brancos_hora_anterior = cursor.execute("""
+            SELECT COUNT(*)
+            FROM historico
+            WHERE cor = 'branco'
+            AND strftime('%H:%M', minuto) >= ?
+            AND strftime('%H:%M', minuto) <= ?
+        """, (f"{hora-1:02d}:{60 - minutos_hora_anterior:02d}", f"{hora-1:02d}:59")).fetchone()[0]
+
+        return brancos_mesma_hora + brancos_hora_anterior
+    else:
+        return cursor.execute("""
+            SELECT COUNT(*)
+            FROM historico
+            WHERE cor = 'branco'
+            AND strftime('%H:%M', minuto) >= ?
+            AND strftime('%H:%M', minuto) <= ?
+        """, (f"{hora:02d}:{minuto_atual - intervalo:02d}", minuto)).fetchone()[0]
+
+# Descrição das Alterações:
+# 1. Criação da função auxiliar _contar_brancos_intervalo para encapsular a lógica de contagem e melhorar a legibilidade.
+# 2. Remoção da duplicidade na verificação de mini-chuva de 5 minutos.
+# 3. Renomeação das variáveis mini_chuva_recente e mini_chuva_atual para brancos_ultimos_10_min e brancos_ultimos_5_min, respectivamente.
+# 4. Ajuste dos valores de retorno para 5 e 7, conforme especificado no README.md para 10 e 5 minutos, respectivamente.
 
 def _verificar_recuperacao_casa(minuto, conn, cursor):
     """Verifica se a casa está em período de recuperação (sem brancos há 30 minutos)."""
